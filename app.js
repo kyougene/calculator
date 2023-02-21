@@ -12,20 +12,30 @@ const one = document.querySelector('.one');
 const zero = document.querySelector('.zero')
 const divide = document.querySelector('.divide');
 const multiply = document.querySelector('.multiply');
+const plus = document.querySelector('.plus');
 const subtract = document.querySelector('.subtract');
 const decimal = document.querySelector('.decimal');
+const equal = document.querySelector('.equal');
 const topScreen = document.querySelector('.top');
 const bottomScreen = document.querySelector('.bottom');
-let values = [];
+let bottomValues = [];
+let topValues = [];
+let operator;
 
 //when a button is clicked, insert that button into the bottomScreen div
  updateBottom = (value) => {
-    if (values.length < 9){
-        values.push(value);
-        bottomScreen.innerText = `${values.join('')}`
+    if (bottomValues.length < 9){
+        bottomValues.push(value);
+        bottomScreen.innerText = `${bottomValues.join('')}`
     }
 }
 
+updateTop = (value) => {
+    topScreen.innerText = `${topValues.join('')}` + value
+}
+
+
+//number buttons
 nine.onclick = () => updateBottom(9);
 eight.onclick = () => updateBottom(8);
 seven.onclick = () => updateBottom(7);
@@ -37,10 +47,59 @@ two.onclick = () => updateBottom(2);
 one.onclick = () => updateBottom(1);
 zero.onclick = () => updateBottom(0);
 decimal.onclick = () => {
-    if (!(values.includes('.'))){
+    if (!(bottomValues.includes('.'))){
         updateBottom('.');
     }
 }
 
+//operand buttons
 
+plus.onclick = () => {
+    if (!(bottomValues.includes('+') && bottomValues[0] !== '+')){
+        topValues = bottomValues;
+        updateTop('+');
+        operator = '+';
+    }
+    bottomValues = [];
+    updateBottom();
+}
 
+subtract.onclick = () => {
+    if (!(bottomValues.includes('-') && bottomValues[0] !== '-')){
+        topValues = bottomValues;
+        updateTop('-')
+    }
+    bottomValues = [];
+    updateBottom();
+}
+
+divide.onclick = () => {
+    if (!(bottomValues.includes('÷') && bottomValues[0] !== '÷')){
+        topValues = bottomValues;
+        updateTop('÷');
+    }
+    bottomValues = [];
+    updateBottom();
+}
+
+multiply.onclick = () => {
+    if (!(bottomValues.includes('*') && bottomValues[0] !== '*')){
+        topValues = bottomValues;
+        updateTop('*');
+    }
+    bottomValues = [];
+    updateBottom();
+}
+
+//equal button
+evaluate = () => {
+    let a = Number(topValues.join(''));
+
+    let b = Number(bottomValues.join(''));
+
+    let result = a/b;
+   
+    bottomScreen.innerText = `${result}`
+}
+
+equal.onclick = () => evaluate();
