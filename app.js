@@ -2,17 +2,17 @@ class Calculator {
     constructor(topInnerText, bottomInnerText){
         this.topInnerText = topInnerText;
         this.bottomInnerText = bottomInnerText;
-        this.clear();
+        this.allClear();
     }
 
     clear() {
-        this.currentOperand = '';
-        this.previousOperand = '';
-        this.operation = undefined;
+        this.currentOperand = this.currentOperand.toString().slice(0, -1);
     }
 
     allClear() {
-
+        this.currentOperand = '';
+        this.previousOperand = '';
+        this.operation = undefined;
     }
 
     appendNumber(number) {
@@ -58,25 +58,12 @@ class Calculator {
 
     updateDisplay() {
         this.bottomInnerText.innerText = this.currentOperand;
-        this.topInnerText.innerText = this.previousOperand;
+        if (this.operation != null) {
+            this.topInnerText.innerText = `${this.previousOperand} ${this.operation}`;
+        }
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const numberButtons = document.querySelectorAll('.number');
 const operationButtons = document.querySelectorAll('.operation');
@@ -108,6 +95,11 @@ equalsButton.addEventListener('click', button=> {
 })
 
 allClearButton.addEventListener('click', button=> {
+    calculator.allClear();
+    calculator.updateDisplay();
+})
+
+clearButton.addEventListener('click', button => {
     calculator.clear();
     calculator.updateDisplay();
 })
